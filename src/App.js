@@ -8,15 +8,21 @@ import {
   Typography,
   Avatar,
   Breadcrumb,
+  Table,
+  Tag,
+  Input,
+  Button,
 } from "antd";
 import {
   UserOutlined,
   DownOutlined,
   DollarCircleOutlined,
   PaperClipOutlined,
+  SearchOutlined,
 } from "@ant-design/icons";
 const { Header, Footer, Sider, Content } = Layout;
 const { Title } = Typography;
+const { Column, ColumnGroup } = Table;
 
 function getItem(label, key, icon, children, type) {
   return {
@@ -28,6 +34,7 @@ function getItem(label, key, icon, children, type) {
   };
 }
 
+//Sidebar Data
 const items = [
   getItem("Payments", "sub1", <DollarCircleOutlined />, []),
   getItem("Receipts", "sub2", <PaperClipOutlined />, []),
@@ -37,6 +44,7 @@ const onClick = (e) => {
   console.log("click", e);
 };
 
+// Dropdown data
 const menu = (
   <Menu
     items={[
@@ -80,6 +88,129 @@ const menu = (
   />
 );
 
+//Table data
+const columns = [
+  {
+    title: "Name",
+    dataIndex: "name",
+    key: "name",
+    render: (text) => <a>{text}</a>,
+    filterDropdown: ({
+      setSelectedKeys,
+      selectedKeys,
+      confirm,
+      clearFilters,
+    }) => {
+      return (
+        <>
+          <Input
+            autoFocus
+            placeholder="Enter the text..."
+            value={selectedKeys[0]}
+            onChange={(e) => {
+              setSelectedKeys(e.target.value ? [e.target.value] : []);
+              confirm({ closeDropdown: false });
+            }}
+            onPressEnter={() => {
+              confirm();
+            }}
+            onBlur={() => {
+              confirm();
+            }}
+          ></Input>
+          <Button
+            onClick={() => {
+              confirm();
+            }}
+            type="primary"
+          >
+            Search
+          </Button>
+          <Button
+            onClick={() => {
+              clearFilters();
+            }}
+            type="danger"
+          >
+            Reset
+          </Button>
+        </>
+      );
+    },
+    filterIcon: () => {
+      return <SearchOutlined />;
+    },
+    onFilter: (value, record) => {
+      return record.name.toLowerCase().includes(value.toLowerCase());
+    },
+  },
+  {
+    title: "Age",
+    dataIndex: "age",
+    key: "age",
+  },
+  {
+    title: "ID",
+    dataIndex: "ID",
+    key: "ID",
+  },
+  {
+    title: "Tags",
+    key: "tags",
+    dataIndex: "tags",
+    render: (_, { tags }) => (
+      <>
+        {tags.map((tag) => {
+          let color = tag.length > 5 ? "geekblue" : "green";
+
+          if (tag === "loser") {
+            color = "volcano";
+          }
+
+          return (
+            <Tag color={color} key={tag}>
+              {tag.toUpperCase()}
+            </Tag>
+          );
+        })}
+      </>
+    ),
+  },
+  {
+    title: "Action",
+    key: "action",
+    render: (_, record) => (
+      <Space size="middle">
+        <a>Invite {record.name}</a>
+        <a>Delete</a>
+      </Space>
+    ),
+  },
+];
+const data = [
+  {
+    key: "1",
+    name: "John Brown",
+    age: 15,
+    ID: "New York No. 1 Lake Park",
+    tags: ["nice", "developer"],
+  },
+  {
+    key: "2",
+    name: "Jim Green",
+    age: 16,
+    ID: "London No. 1 Lake Park",
+    tags: ["loser"],
+  },
+  {
+    key: "3",
+    name: "Joe Black",
+    age: 15,
+    ID: "Sidney No. 1 Lake Park",
+    tags: ["cool", "teacher"],
+  },
+];
+
 function App() {
   return (
     <div className="App">
@@ -110,13 +241,14 @@ function App() {
                   margin: "16px 0",
                 }}
               >
+                <Breadcrumb.Item>Home</Breadcrumb.Item>
                 <Breadcrumb.Item>Payments</Breadcrumb.Item>
               </Breadcrumb>
               <div
                 style={{ padding: 24, minHeight: 525 }}
                 className="site-layout-content"
               >
-                Content
+                <Table columns={columns} dataSource={data} />;
               </div>
             </Content>
 
