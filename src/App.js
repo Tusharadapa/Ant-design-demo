@@ -22,7 +22,7 @@ import {
 } from "@ant-design/icons";
 const { Header, Footer, Sider, Content } = Layout;
 const { Title } = Typography;
-const { Column, ColumnGroup } = Table;
+// const { Column, ColumnGroup } = Table;
 
 function getItem(label, key, icon, children, type) {
   return {
@@ -94,7 +94,7 @@ const columns = [
     title: "Name",
     dataIndex: "name",
     key: "name",
-    render: (text) => <a>{text}</a>,
+    render: (text) => <a href="https://ant.design/components/icon/">{text}</a>,
     filterDropdown: ({
       setSelectedKeys,
       selectedKeys,
@@ -181,8 +181,8 @@ const columns = [
     key: "action",
     render: (_, record) => (
       <Space size="middle">
-        <a>Invite {record.name}</a>
-        <a>Delete</a>
+        <a href="https://ant.design/components/icon/">Invite {record.name}</a>
+        <a href="https://ant.design/components/icon/">Delete</a>
       </Space>
     ),
   },
@@ -211,6 +211,7 @@ const data = [
   },
 ];
 
+//Main Function
 function App() {
   return (
     <div className="App">
@@ -244,6 +245,7 @@ function App() {
                 <Breadcrumb.Item>Home</Breadcrumb.Item>
                 <Breadcrumb.Item>Payments</Breadcrumb.Item>
               </Breadcrumb>
+
               <div
                 style={{ padding: 24, minHeight: 525 }}
                 className="site-layout-content"
