@@ -1,14 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import "./App.css";
 import {
   Dropdown,
   Menu,
   Space,
   Layout,
+  // Table,
   Typography,
   Avatar,
   Breadcrumb,
-  Table,
   Tag,
   Input,
   Button,
@@ -22,6 +22,7 @@ import {
 } from "@ant-design/icons";
 const { Header, Footer, Sider, Content } = Layout;
 const { Title } = Typography;
+
 // const { Column, ColumnGroup } = Table;
 
 function getItem(label, key, icon, children, type) {
@@ -213,6 +214,24 @@ const data = [
 
 //Main Function
 function App() {
+  //Global SearchBar
+  const [value, setValue] = useState("");
+  const [dataSource, setDataSource] = useState(data);
+  const [tableFilter, setTableFilter] = useState([]);
+  const filterData = (e) => {
+    if (e.target.value !== "") {
+      setValue(e.target.value);
+      const filterTable = dataSource.filter((o) =>
+        Object.keys(o).some((k) =>
+          String(o[k]).toLowerCase().includes(e.target.value.toLowerCase())
+        )
+      );
+      setTableFilter([...filterTable]);
+    } else {
+      setValue(e.target.value);
+      setDataSource([...dataSource]);
+    }
+  };
   return (
     <div className="App">
       <Layout>
@@ -250,7 +269,51 @@ function App() {
                 style={{ padding: 24, minHeight: 525 }}
                 className="site-layout-content"
               >
-                <Table columns={columns} dataSource={data} />;
+                <div className="input-group mb-3">
+                  <input
+                    type="text"
+                    class="form-control"
+                    placeholder="Search Here..."
+                    aria-label="Username"
+                    aria-describedby="basic-addon1"
+                    value={value}
+                    onChange={filterData}
+                  ></input>
+                </div>
+                {/* <Table columns={columns} dataSource={data} />; */}
+                <table class="table table-dark table-striped">
+                  <thead>
+                    <tr>
+                      <th scope="col">Name</th>
+                      <th scope="col">Age</th>
+                      <th scope="col">ID</th>
+                      <th scope="col">Tags</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {value.length > 0
+                      ? tableFilter.map((data) => {
+                          return (
+                            <tr>
+                              <td>{data.name}</td>
+                              <td>{data.age}</td>
+                              <td>{data.ID}</td>
+                              <td>{data.tags}</td>
+                            </tr>
+                          );
+                        })
+                      : dataSource.map((data) => {
+                          return (
+                            <tr>
+                              <td>{data.name}</td>
+                              <td>{data.age}</td>
+                              <td>{data.ID}</td>
+                              <td>{data.tags}</td>
+                            </tr>
+                          );
+                        })}
+                  </tbody>
+                </table>
               </div>
             </Content>
 
