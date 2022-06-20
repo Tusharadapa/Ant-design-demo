@@ -1,11 +1,11 @@
-import React, { useState } from "react";
+import React, { Component } from "react";
 import "./App.css";
 import {
   Dropdown,
   Menu,
   Space,
   Layout,
-  // Table,
+  Table,
   Typography,
   Avatar,
   Breadcrumb,
@@ -90,148 +90,204 @@ const menu = (
 );
 
 //Table data
-const columns = [
-  {
-    title: "Name",
-    dataIndex: "name",
-    key: "name",
-    render: (text) => <a href="https://ant.design/components/icon/">{text}</a>,
-    filterDropdown: ({
-      setSelectedKeys,
-      selectedKeys,
-      confirm,
-      clearFilters,
-    }) => {
-      return (
-        <>
-          <Input
-            autoFocus
-            placeholder="Enter the text..."
-            value={selectedKeys[0]}
-            onChange={(e) => {
-              setSelectedKeys(e.target.value ? [e.target.value] : []);
-              confirm({ closeDropdown: false });
-            }}
-            onPressEnter={() => {
-              confirm();
-            }}
-            onBlur={() => {
-              confirm();
-            }}
-          ></Input>
-          <Button
-            onClick={() => {
-              confirm();
-            }}
-            type="primary"
-          >
-            Search
-          </Button>
-          <Button
-            onClick={() => {
-              clearFilters();
-            }}
-            type="danger"
-          >
-            Reset
-          </Button>
-        </>
-      );
-    },
-    filterIcon: () => {
-      return <SearchOutlined />;
-    },
-    onFilter: (value, record) => {
-      return record.name.toLowerCase().includes(value.toLowerCase());
-    },
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    key: "age",
-  },
-  {
-    title: "ID",
-    dataIndex: "ID",
-    key: "ID",
-  },
-  {
-    title: "Tags",
-    key: "tags",
-    dataIndex: "tags",
-    render: (_, { tags }) => (
-      <>
-        {tags.map((tag) => {
-          let color = tag.length > 5 ? "geekblue" : "green";
-
-          if (tag === "loser") {
-            color = "volcano";
-          }
-
-          return (
-            <Tag color={color} key={tag}>
-              {tag.toUpperCase()}
-            </Tag>
-          );
-        })}
-      </>
-    ),
-  },
-  {
-    title: "Action",
-    key: "action",
-    render: (_, record) => (
-      <Space size="middle">
-        <a href="https://ant.design/components/icon/">Invite {record.name}</a>
-        <a href="https://ant.design/components/icon/">Delete</a>
-      </Space>
-    ),
-  },
-];
 const data = [
   {
     key: "1",
     name: "John Brown",
     age: 15,
     ID: "New York No. 1 Lake Park",
-    tags: ["nice", "developer"],
+    tags: ["Nice", " Developer"],
   },
   {
     key: "2",
     name: "Jim Green",
     age: 16,
     ID: "London No. 1 Lake Park",
-    tags: ["loser"],
+    tags: ["Loser"],
   },
   {
     key: "3",
     name: "Joe Black",
     age: 15,
     ID: "Sidney No. 1 Lake Park",
-    tags: ["cool", "teacher"],
+    tags: ["Cool", " Teacher"],
+  },
+  {
+    key: "4",
+    name: "Chris Evans",
+    age: 18,
+    ID: "Sidney No. 1 Lake Park",
+    tags: ["Captain", " America"],
+  },
+  {
+    key: "5",
+    name: "Bruce Banner",
+    age: 20,
+    ID: "Sidney No. 1 Lake Park",
+    tags: ["The", " Hulk"],
+  },
+  {
+    key: "6",
+    name: "Bucky",
+    age: 15,
+    ID: "Sidney No. 1 Lake Park",
+    tags: ["Winter", " Soldier"],
   },
 ];
+const Search = Input.Search;
+
+const TitleSearch = ({ onsearch, ...props }) => (
+  <div {...props}>
+    <Search
+      placeholder="Enter Title"
+      onSearch={onsearch}
+      style={{ width: 200 }}
+    />
+  </div>
+);
+const EventsTable = ({ data }) => {
+  const columns = [
+    {
+      title: "Name",
+      dataIndex: "name",
+      key: "name",
+      render: (text) => (
+        <a href="https://ant.design/components/icon/">{text}</a>
+      ),
+      filterDropdown: ({
+        setSelectedKeys,
+        selectedKeys,
+        confirm,
+        clearFilters,
+      }) => {
+        return (
+          <>
+            <Input
+              autoFocus
+              placeholder="Enter the text..."
+              value={selectedKeys[0]}
+              onChange={(e) => {
+                setSelectedKeys(e.target.value ? [e.target.value] : []);
+                confirm({ closeDropdown: false });
+              }}
+              onPressEnter={() => {
+                confirm();
+              }}
+              onBlur={() => {
+                confirm();
+              }}
+            ></Input>
+            <Button
+              onClick={() => {
+                confirm();
+              }}
+              type="primary"
+            >
+              Search
+            </Button>
+            <Button
+              onClick={() => {
+                clearFilters();
+              }}
+              type="danger"
+            >
+              Reset
+            </Button>
+          </>
+        );
+      },
+      filterIcon: () => {
+        return <SearchOutlined />;
+      },
+      onFilter: (value, record) => {
+        return record.name.toLowerCase().includes(value.toLowerCase());
+      },
+    },
+    {
+      title: "Age",
+      dataIndex: "age",
+      key: "age",
+    },
+    {
+      title: "ID",
+      dataIndex: "ID",
+      key: "ID",
+    },
+    {
+      title: "Tags",
+      key: "tags",
+      dataIndex: "tags",
+      render: (_, { tags }) => (
+        <>
+          {tags.map((tag) => {
+            let color = tag.length > 5 ? "geekblue" : "green";
+
+            if (tag === "loser") {
+              color = "volcano";
+            }
+
+            return (
+              <Tag color={color} key={tag}>
+                {tag.toUpperCase()}
+              </Tag>
+            );
+          })}
+        </>
+      ),
+    },
+    {
+      title: "Action",
+      key: "action",
+      render: (_, record) => (
+        <Space size="middle">
+          <a href="https://ant.design/components/icon/">Invite {record.name}</a>
+          <a href="https://ant.design/components/icon/">Delete</a>
+        </Space>
+      ),
+    },
+  ];
+  return <Table dataSource={data} columns={columns} />;
+};
+
+// Component
+class EApp extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      data,
+    };
+  }
+  handleSearch = (searchText) => {
+    const filteredEvents = data.filter(({ title }) => {
+      title = title.toLowerCase();
+      return title.includes(searchText);
+    });
+    this.setState({
+      data: filteredEvents,
+    });
+  };
+}
 
 //Main Function
 function App() {
   //Global SearchBar
-  const [value, setValue] = useState("");
-  const [dataSource, setDataSource] = useState(data);
-  const [tableFilter, setTableFilter] = useState([]);
-  const filterData = (e) => {
-    if (e.target.value !== "") {
-      setValue(e.target.value);
-      const filterTable = dataSource.filter((o) =>
-        Object.keys(o).some((k) =>
-          String(o[k]).toLowerCase().includes(e.target.value.toLowerCase())
-        )
-      );
-      setTableFilter([...filterTable]);
-    } else {
-      setValue(e.target.value);
-      setDataSource([...dataSource]);
-    }
-  };
+  // const [value, setValue] = useState("");
+  // const [dataSource, setDataSource] = useState(data);
+  // const [tableFilter, setTableFilter] = useState([]);
+  // const filterData = (e) => {
+  //   if (e.target.value !== "") {
+  //     setValue(e.target.value);
+  //     const filterTable = dataSource.filter((o) =>
+  //       Object.keys(o).some((k) =>
+  //         String(o[k]).toLowerCase().includes(e.target.value.toLowerCase())
+  //       )
+  //     );
+  //     setTableFilter([...filterTable]);
+  //   } else {
+  //     setValue(e.target.value);
+  //     setDataSource([...dataSource]);
+  //   }
+  // };
   return (
     <div className="App">
       <Layout>
@@ -270,50 +326,18 @@ function App() {
                 className="site-layout-content"
               >
                 <div className="input-group mb-3">
-                  <input
+                  {/* <input
                     type="text"
-                    class="form-control"
+                    class="form-co8055ntrol"
                     placeholder="Search Here..."
                     aria-label="Username"
                     aria-describedby="basic-addon1"
                     value={value}
                     onChange={filterData}
-                  ></input>
+                  ></input> */}
+                  <TitleSearch onSearch={this.handleSearch} />
                 </div>
-                {/* <Table columns={columns} dataSource={data} />; */}
-                <table class="table table-dark table-striped">
-                  <thead>
-                    <tr>
-                      <th scope="col">Name</th>
-                      <th scope="col">Age</th>
-                      <th scope="col">ID</th>
-                      <th scope="col">Tags</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    {value.length > 0
-                      ? tableFilter.map((data) => {
-                          return (
-                            <tr>
-                              <td>{data.name}</td>
-                              <td>{data.age}</td>
-                              <td>{data.ID}</td>
-                              <td>{data.tags}</td>
-                            </tr>
-                          );
-                        })
-                      : dataSource.map((data) => {
-                          return (
-                            <tr>
-                              <td>{data.name}</td>
-                              <td>{data.age}</td>
-                              <td>{data.ID}</td>
-                              <td>{data.tags}</td>
-                            </tr>
-                          );
-                        })}
-                  </tbody>
-                </table>
+                <EventsTable data={data} />
               </div>
             </Content>
 
@@ -330,5 +354,5 @@ function App() {
     </div>
   );
 }
-
+export { EApp };
 export default App;
